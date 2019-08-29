@@ -6,6 +6,7 @@ import (
     "os/user"
     stdlog "log"
 
+    "eag/internal/pkg/binaryops"
     "eag/internal/pkg/fileops"
     "eag/internal/pkg/userinput"
 
@@ -58,12 +59,16 @@ func main() {
                 fileops.Write("Overwrite")
             case 'r', 'R':
                 fileops.Read()
+            case 'b', 'B':
+                binaryops.Execute(false)
+            case 'w', 'W':
+                binaryops.Execute(true)
             // case 'h', 'H':
             //  help()
             case 'q', 'Q':
                 os.Exit(0)
             default:
-                fmt.Println("Invalid Command: ", choice)
+                fmt.Println("Invalid Command: ", string(choice))
         }
     }
 }
