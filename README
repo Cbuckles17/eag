@@ -1,0 +1,12 @@
+Summary
+
+The interface to EAG is a shell. The user can input the commands they want to do and go from there. The shell has functions to do file, binary and network operations. The code for EAG lives in the eag repo. Logging lives in a separate repo as it’s meant to be a scalable package. The idea behind the genericlog is to create an interface for 3rd party logging packages. This means that if your choice of 3rd party logging changes or you need to add another logging type then it’s as simple as implementing the interface and there will be no changes to your codebase where the logging is called.
+
+Executables
+
+shell
+• The shell and user interface for EAG.
+tcp_listener
+• Simple TCP listener/server for testing the network operations.
+udp_listener
+• Simple UDP listener/server for testing the network operations.
