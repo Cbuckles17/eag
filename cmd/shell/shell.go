@@ -1,6 +1,7 @@
 package main
 
 import (
+    "flag"
     "fmt"
     "os"
     "os/user"
@@ -17,19 +18,29 @@ import (
 
 // init is used to set up logging.
 func init() {
+    logToFile := false
+
+    // set up flag for enabling logging to file
+    logFilePath := flag.String("l", "", "Path to a log file. It will be created if it DNE.")
+    flag.Parse()
+
+    if len(*logFilePath) > 0 {
+    // set to log a file
+        logToFile = true
+    }
+
     user, err := user.Current()
     if err != nil {
         stdlog.Fatalf("Failed Getting User Information: %s\n", err)
     }
 
-    // TO DO: Pass in conf via commandline args else use defaulted values
     config := log.Conf{
         LogFormat:          "JSON",
         LogLevel:           log.DEBUGLEVEL,
         LogTimeUTC:         true,
         LogToStdout:        true,
-        LogToFile:          true,
-        FilePath:           "/Users/cbuckley/go/test.log",
+        LogToFile:          logToFile,
+        FilePath:           *logFilePath,
         UseDefaultFields:   true,
         DefaultFields:      log.Fields{"user_name": user.Username, "user_id": user.Uid, "pid": os.Getpid()},
     }
@@ -96,7 +107,7 @@ func main() {
             case "q":
                 os.Exit(0)
             default:
-                fmt.Println("Invalid Command: ", string(choice))
+                fmt.Println("Invalid Command: ", choice)
         }
     }
 }
