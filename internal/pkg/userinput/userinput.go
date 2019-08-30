@@ -10,9 +10,7 @@ import (
 
 // GetString will get user input and put it into a string.
 func GetString() (string, error) {
-    stdinReader := bufio.NewReader(os.Stdin)
-
-    userInput, err := stdinReader.ReadString('\n')
+    userInput, err := bufio.NewReader(os.Stdin).ReadString('\n')
     if err != nil {
     // checking if ReadString returned an error
         log.WithFields(log.Fields{
@@ -29,9 +27,7 @@ func GetString() (string, error) {
 
 // GetRune will get user input and put it into a rune.
 func GetRune() (rune, error) {
-    stdinReader := bufio.NewReader(os.Stdin)
-
-    userInput, _, err := stdinReader.ReadRune()
+    userInput, _, err := bufio.NewReader(os.Stdin).ReadRune()
     if err != nil {
     // checking if ReadRune returned an error
         log.WithFields(log.Fields{

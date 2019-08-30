@@ -4,10 +4,12 @@ import (
     "fmt"
     "os"
     "os/user"
+    "strings"
     stdlog "log"
 
     "eag/internal/pkg/binaryops"
     "eag/internal/pkg/fileops"
+    "eag/internal/pkg/netops"
     "eag/internal/pkg/userinput"
 
     log "github.com/Cbuckles17/genericlog/pkg/genericlog"
@@ -37,35 +39,61 @@ func init() {
     }
 }
 
+// help just prints all of the options out
+func help() {
+    fmt.Printf(
+        "c : Create File\n" +
+        "d : Delete File\n" +
+        "a : Append File\n" +
+        "o : Overwrite File\n" +
+        "r : Read File\n" +
+        "b : Execute Binary No Wait\n" +
+        "bw: Execute Binary Wait\n" +
+        "t : Write TCP No Wait\n" +
+        "tw: Write TCP Wait\n" +
+        "u : Write UDP No Wait\n" +
+        "uw: Write UDP Wait\n")
+}
+
 // main runs a loop of getting user input and deciding what to do
 // from there.
 func main() {
     for {
         fmt.Print("shell>")
-        choice, err := userinput.GetRune()
+        choice, err := userinput.GetString()
         if err != nil {
-        // checking if userinput.GetRune returned an error
+        // checking if userinput.GetString returned an error
             os.Exit(-1)
         }
 
+        choice = strings.ToLower(choice)
+
         switch choice {
-            case 'c', 'C':
+            case "c":
                 fileops.Create()
-            case 'd', 'D':
+            case "d":
                 fileops.Delete()
-            case 'a', 'A':
+            case "a":
                 fileops.Write("Append")
-            case 'o', 'O':
+            case "o":
                 fileops.Write("Overwrite")
-            case 'r', 'R':
+            case "r":
                 fileops.Read()
-            case 'b', 'B':
+            case "b":
                 binaryops.Execute(false)
-            case 'w', 'W':
+            case "bw":
                 binaryops.Execute(true)
-            // case 'h', 'H':
-            //  help()
-            case 'q', 'Q':
+            case "t":
+                netops.WriteTCP(false)
+            case "tw":
+                netops.WriteTCP(true)
+            case "u":
+                netops.WriteUDP(false)
+            case "uw":
+                netops.WriteUDP(true)
+            case "h":
+                help()
+            case "q":
                 os.Exit(0)
             default:
                 fmt.Println("Invalid Command: ", string(choice))
